@@ -1,0 +1,254 @@
+﻿body
+{
+	display: flex;
+	flex-direction: column;
+	font-family: system-ui, Verdana;
+	padding: 0;
+	margin: 0;
+	height: 100vh;
+}
+body>h1
+{
+	box-shadow: #00000080 0 8px 8px -8px;
+	margin: 0;
+	padding: 0.5em 0.2em;
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	backdrop-filter: blur(2px);
+	background-color: #ffffffad;
+}
+main
+{
+	display: flex;
+	align-items: stretch;
+	gap: 8px;
+	flex-wrap: wrap;
+	padding: 0 0.4em;
+	margin-bottom: 8px;
+	flex: auto;
+}
+main>section
+{
+	flex: 1 0 512px;
+	width: 50%;
+	min-height: 33%;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+}
+#cfg 
+{
+	color: #000;
+	text-decoration: none;
+}
+#cfg .list
+{
+	display: none;
+    position: absolute;
+    border: 1px solid #ccc;
+    width: 12em;
+    background-color: #fff;
+    z-index: 1;
+    box-shadow: #000 0 4px 8px -4px;
+    border-top: none;
+    padding: 0.4em;
+    box-sizing: border-box;
+    text-align: left;
+    font-size: 0.6em;
+    font-weight: normal;
+    cursor: default;
+}
+#cfg:focus-within .list
+{
+	display: block;
+}
+#cfg .list label
+{
+	display: block;
+    cursor: pointer;
+}
+#src
+{
+	width: 100%;
+	height: auto;
+	box-sizing: border-box;
+	tab-size : 4;
+	white-space: nowrap;
+	resize: none;
+	flex: auto;
+	min-height: 40vh;
+	font-family: "Courier New", monospace; 
+	font-size: 10pt;
+	border: 1px solid #aaa;
+	border-radius: 4px;
+	padding: 4px;
+}
+.result
+{
+	border: 1px solid #aaa;
+	border-radius: 4px;
+	overflow: auto;
+	width: auto;
+	flex: auto;
+	position: relative;
+}
+#result, #json
+{
+	white-space: pre;
+	padding: 0.8em;
+	font-family: "Courier New", monospace; 
+	font-size: 10pt;
+	position: absolute;
+	width: 100%;
+    box-sizing: border-box;	
+}
+#github
+{
+	color: #555;
+    font-weight: normal;
+    font-size: 50%;
+    display: inline-block;
+    text-transform: uppercase;
+    text-decoration: none;
+    position: absolute;
+    right: 16px;
+    top: 8px;
+    z-index: 100;
+}
+#github svg
+{
+    fill: #555;
+	display: inline;
+    width: 16px;
+    vertical-align: middle;
+    margin-top: -3px;
+}
+#result article
+{
+	width: 100%;
+	white-space: normal;
+	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+    font-size: 16px;
+    line-height: 1.25;
+    word-wrap: break-word;
+}
+#result h1, #result h2, #result h3, #result h4, #result h5
+{
+	margin-top: 24px;
+    margin-bottom: 16px;	
+    line-height: 1.25;
+	font-weight: 600;
+}
+#result h1
+{
+	padding-bottom: .3em;
+    font-size: 2em;
+    border-bottom: 1px solid #ccc;
+}
+#result h2
+{
+	padding-bottom: .3em;
+	font-size: 1.5em;
+    border-bottom: 1px solid #ccc;
+}
+#result h3
+{
+	font-size: 1.25em;
+}
+#result .quote, #result .alert
+{
+    border-left: 4px solid #aaa;
+    padding: 0.4em 0 0.4em 1em;
+	margin: 0.4em 0 0.4em 0;
+	border-radius: 4px;
+}
+#result .alert.note
+{
+	border-color: #0a0;
+}
+#result .alert.important
+{
+	border-color: #00f;
+}
+#result .alert.warning
+{
+	border-color: #f00;
+}
+#result .alert>label
+{
+	margin-bottom: 1em;
+	font-weight: bold;
+	display: block;
+}
+#result .alert.note>label
+{
+	color: #0a0;
+}
+#result .alert.important>label
+{
+	color: #00f;
+}
+#result .alert.warning>label
+{
+	color: #f00;
+}
+#result p
+{
+	margin: 0;
+	padding: 0.4em 0 0.4em 0;
+}
+#result img
+{
+	vertical-align: middle;
+}
+#result pre
+{
+    font-family: monospace;
+    padding: 0.8em;
+    background-color: #f7f7f7;
+    white-space: pre;
+	overflow-x: auto;
+	border-radius: 4px;
+}
+#result code
+{
+	font-family: monospace;
+    padding: 1px 0.4em;
+    background-color: #ffe5c3;
+	border-radius: 4px;
+}
+#result .media
+{
+	float: right;
+    width: min-content;
+    border: 1px solid #aaa;
+    padding: 0.8em;
+    text-align: center;
+    background-color: #fff;
+    border-radius: 0.4em;
+    font-size: 0.8em;
+    margin: 0 0 0 0.8em;
+	line-height: normal;
+}
+#result .media img
+{
+	margin-bottom: 0.4em;
+}
+#result .mention
+{
+    background-color: #e9e9e9;
+	border-radius: 4px;
+    padding: 1px 0.4em;
+	color: #000;
+}
+#result a.mention
+{
+	text-decoration: none;
+	background-color: #d7dbff;
+}
+#result .mention .icon
+{
+	font-weight: bold;
+}

@@ -1,0 +1,354 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<link href="css/example.css" rel="stylesheet">
+		<!-- Подключение скриптов для разработки -->
+		<!-- <script src="src/dm.md.elements@1.js"></script>
+		<script src="src/dm.md.parser@1.js"></script>
+		<script src="src/dm.md.render.html@1.js"></script> -->
+
+		<!-- Подключение минифицированных скриптов -->
+		<script src="dist/dm.md@1.min.js"></script>
+		<!-- <script src="showdown@2.1.0.min.js"></script> -->
+		
+		<!-- Подключение подсветки синтаксиса -->
+		<link href="https://etcdema.github.io/DmSyntax/dist/dm.syntax@1.min.css" rel="stylesheet">
+		<script src="https://etcdema.github.io/DmSyntax/dist/dm.syntax@1.min.js"></script>
+	</head>
+	<body>
+		<h1>Markdown to HTML example <a id="github" href="https://github.com/ETCDema/DmMD"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg> GitHub</a></h1>
+		<main>
+			<section>
+				<h2>Markdown Source</h2>
+				<textarea id="src">Example based on [Github markdown doc syntax](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
+
+# A first-level heading
+## A second-level heading
+### A third-level heading
+                               * * *
+Inline elements
+---------------
+
+* Bold:  
+  `**This is bold text**` ==> **This is bold text**  
+  `__This is bold text__` ==> __This is bold text__
+* Italic:  
+  `*This text is italicized*` ==> *This text is italicized*  
+  `_This text is italicized_` ==> _This text is italicized_
+* All bold and italic:  
+  `***All this text is important***` ==> ***All this text is important***
+* Bold and nested italic:  
+  `**This text is *extremely* important**` ==> **This text is *extremely* important**  
+  `*This text is **extremely** important*` ==> *This text is **extremely** important*
+
+* Strikethrough:  
+  `~~This was mistaken text~~` ==> ~~This was mistaken text~~
+
+* Subscript:  
+  `This is a <sub>subscript</sub> text` ==> This is a <sub>subscript</sub> text  
+  `This is a ~subscript~ text` => This is a ~subscript~ text
+* Superscript:  
+  `This is a <sup>superscript</sup> text` ==> This is a <sup>superscript</sup> text  
+  `This is a ^superscript^ text` ==> This is a ^superscript^ text
+* Inline code:  
+  `Use ``git status`` to list...` ==> Use `git status` to list...
+
+* **Links:**
+    * Link in text  
+      `[GitHub Pages](https://pages.github.com/)` => [GitHub Pages](https://pages.github.com/)
+    * Easy link  
+      `<https://www.markdownguide.org>` ==> <https://www.markdownguide.org>
+    * Easy email link  
+      `<fake@example.com>` ==> <fake@example.com>
+    * Link from links list at end  
+      `[hobbit-hole][1]` ==> [hobbit-hole][1]
+    * Local relative link  
+      `</index.html>` ==> </index.html>  
+      `[this page](/index.html)` ==> [this page](/index.html)  
+      `[this page][self]` ==> [this page][self]
+* Standard/Simple line breaks:
+    * Standard: two spaces and \n  
+	  break line
+	* Simple: any \n
+	  break line
+
+* Mentioning people and the like:  
+  `@github/support` ==> @github/support (no link)  
+  `@github/ETCDema` ==> @github/ETCDema (with link from ext)
+
+* Images:  
+  `![Octocat smiling and raising a tentacle.](https://myoctocat.com/assets/images/base-octocat.svg 32*32)` => ![Octocat smiling and raising a tentacle.](https://myoctocat.com/assets/images/base-octocat.svg 32*32)
+* Image in float box - `!![Text in **floating** box may be with ``Markdown``](https://myoctocat.com/assets/images/base-octocat.svg 128*)` ==>!![Text in **floating** box may be with `Markdown`](https://myoctocat.com/assets/images/base-octocat.svg 128*)<== floating box from here, _this text after floating box_
+
+* Symbols:  
+  `...` ==> ...  
+  `(c)` ==>  (c)  
+  `(TM)` ==> (TM)  
+  `(R)` ==> (R)  
+   and arrows: `<-- <--> --> <== <==> ==>` <-- <--> --> <== <==> ==>
+
+---
+Block elements
+--------------
+
+### Blockquotes
+					
+> Text that is a quote
+
+### Blockquotes with Other Elements
+
+> #### The quarterly results look great!
+>
+> - Revenue was off the chart.
+> - Profits were higher than ever.
+>
+>  *Everything* is going according to **plan**.
+>
+> New paragraph not in list.
+
+### Alerts (_github blockquotes extension_)
+
+> [!NOTE]
+> Highlights information that users should take into account, even when skimming.
+
+> [!IMPORTANT]
+> Crucial information necessary for users to succeed.
+
+> [!WARNING]
+> Critical content demanding immediate user attention due to potential risks.
+
+---
+### Lists
+
+- George Washington
+* John Adams
++ Thomas Jefferson
+
+To order your list, precede each line with a number.
+
+1. James Madison
+1. James Monroe
+1. John Quincy Adams
+
+Nested list
+
+1. First list item
+	- First nested list item
+		- Second nested list item
+
+List and paragraph
+
+* This is the first list item.
+* Here's the second list item.
+
+	I need to add another paragraph below the second list item.
+
+* And here's the third list item.
+
+List and quotes
+
+* This is the first list item.
+* Here's the second list item.
+
+	> A blockquote would look great below the second list item.
+
+* And here's the third list item.
+
+---
+### Preformatted, code blocks and embeded objects
+
+Preformatted:
+```
+git status
+git add
+git commit
+```
+
+JS code block:
+``` js
+function hello()
+{
+	alert('Hello!');
+}
+// GO!
+hello();
+```
+#### Embedded element, rendered by extension:
+JSON data for extension `progress-bar` (code block started with ``````` progress-bar`):
+``` json
+{ "max" : 200, "value": 98, "label": "Embedded progress:" }
+```
+Result:
+``` progress-bar
+{ "max" : 200, "value": 98, "label": "Embedded progress:" }
+```
+
+### Ruler
+* * *
+That's All!
+* * *
+[self]: /index.html "This page title"
+[1]: https://en.wikipedia.org/wiki/Hobbit#Lifestyle "Hobbit lifestyles"
+
+## Render extension source
+``` js
+// Заголовки для блоков предупреждений
+const _alertLabels = {
+	note      : '<label>[i] Информация</label>',
+	important : '<label>[!] Важно</label>',
+	warning   : '<label>[‼] Предупреждение</label>',
+};
+// Отображение встроенного объекта
+function _progressBar(json)
+{
+	try
+	{
+		const data = JSON.parse(json);
+		return '<p><label>'+(data.label || '')+' <progress value="'+data.value+'" max="'+data.max+'">'+data.value+'/'+data.max+'</progress></label></p>'
+	} catch(e)
+	{
+		return 'Progress bar FAIL: '+e.message;
+	}
+}
+// Расширения генерации HTML
+const renderExt = {
+	// Заголовки блоков предупреждений
+	alertLabel : (alert)      => _alertLabels[alert],
+	// Значение атрибута target для ссылок
+	linkTarget : (url)        => url.url[0]!=='/' && '_blank',
+	// Упоминания
+	mention    : (el, buf)    =>
+	{
+		if (el.group!=='github' || el.id!=='ETCDema') return false;
+		buf.html('<a href="https://github.com/ETCDema" target="_blank" class="mention"><span class="icon">@</span>GitHub/ETCDema</a>');
+	},
+	// Подсветка кода
+	code       : (lang, code) =>
+	{
+		if (lang==='progress-bar') return _progressBar(code);
+		const fx		= dmSyntax[lang.toUpperCase()];
+		return fx && ('<pre>'+fx(code)+'</pre>');
+	},
+};
+```
+</textarea>
+			</section>
+			<section>
+				<h2><a id="cfg" title="Select active elements" href="#">DOM⚙️<div class="list"></div></a></h2>
+				<div class="result"><div id="json"></div></div>
+			</section>
+			<section>
+				<h2>HTML Result</h2>
+				<div class="result"><div id="result"></div></div>
+			</section>
+		</main>
+		
+		<script>
+			(function()
+			{
+				const _src		= document.getElementById('src');
+				const _json		= document.getElementById('json');
+				const _result	= document.getElementById('result');
+				const _cfg		= document.querySelector("#cfg .list");
+
+				// Заголовки для блоков предупреждений
+				const _alertLabels		= {
+					note		: '<label>[i] Информация</label>',
+					important	: '<label>[!] Важно</label>',
+					warning		: '<label>[‼] Предупреждение</label>',
+				};
+				// Отображение встроенного объекта
+				function _progressBar(json)
+				{
+					try
+					{
+						const data		= JSON.parse(json);
+						return '<p><label>'+(data.label || '')+' <progress value="'+data.value+'" max="'+data.max+'">'+data.value+'/'+data.max+'</progress></label></p>'
+					} catch(e)
+					{
+						return 'Progress bar FAIL: '+e.message;
+					}
+				}
+				// Расширения генерации HTML
+				const renderExt	= {
+					// Заголовки блоков предупреждений
+					alertLabel	: (alert)      => _alertLabels[alert],
+					// Значение атрибута target для ссылок
+					linkTarget	: (url)        => url.url[0]!=='/' && '_blank',
+					// Упоминания
+					mention		: (el, buf)    =>
+					{
+						if (el.group!=='github' || el.id!=='ETCDema') return false;
+						buf.html('<a href="https://github.com/ETCDema" target="_blank" class="mention"><span class="icon">@</span>GitHub/ETCDema</a>');
+					},
+					// Подсветка кода
+					code		: (lang, code) =>
+					{
+						if (lang==='progress-bar') return _progressBar(code);
+						const fx		= dmSyntax[lang.toUpperCase()];
+						return fx && ('<pre>'+fx(code)+'</pre>');
+					},
+				};
+
+				// Showdown для сравнения скорости
+				// const converter				= new showdown.Converter({
+				// 	openLinksInNewWindow	: true,
+				// 	strikethrough			: true,
+				// 	simpleLineBreaks		: true,
+				// 	moreStyling				: true,
+				// 	noHeaderId				: true,
+				// });
+
+				// Создаем парсер markdown разметки с нужными нам элементами
+				let parse		= new DmMD.parser(DmMD.elements.$ALL);
+				let activeExt	= renderExt;
+
+				function _update()
+				{
+					const start			= performance.now();
+					const doc			= parse(_src.value);				// Из исходного текста строим DOM
+					const html			= DmMD.HTML.render(doc, activeExt);	// Генерим HTML по построенному DOMу 
+					console.log('DmMD parse & render time: '+((performance.now()-start)+'ms')+', HTML length: '+html.length);
+
+					// const start2		= performance.now();
+					// const html2 		= converter.makeHtml(_src.value);
+					// console.log('Showdown parse & render time: '+((performance.now()-start2)+'ms')+', HTML length: '+html2.length);
+
+					_result.innerHTML	= html;
+					_json.innerHTML		= dmSyntax.JSON(JSON.stringify(doc, null, '  '));// Отображаем DOM в JSON формате
+				}
+
+				// Заполним настройки
+				_cfg.innerHTML	= Object.entries(DmMD.elements).reduce((buf, kh) =>
+				{
+					const h		= kh[1];
+					if (typeof(h)!=='function') return buf;
+					if (!buf.prev || h.inline!==buf.prev.inline) buf.push(h.inline ? '<b>Inline</b>' : '<b>Blocks</b>');
+					buf.push('<label><input type="checkbox" value="', h.name, '" checked/>', kh[0], '</label>');
+					buf.prev	= h;
+					return buf;
+				}, []).concat((() =>
+				{
+					const buf	= ['<b>Render extensions</b>'];
+					for (let n in renderExt) buf.push('<label><input type="checkbox" value="', n, '" checked/>', n, '</label>');
+					return buf;
+				})()).join('');
+
+				// Настройка блоков
+				const _sw		= Array.from(_cfg.querySelectorAll('input[type="checkbox"]'));
+				_cfg.addEventListener('change', () =>
+				{
+					const sel	= _sw.reduce((result, sw) => ((result[sw.value] = sw.checked), result), {});
+					parse		= new DmMD.parser(DmMD.elements.$ALL.filter((h) => sel[h.name]));
+					activeExt	= {};
+					for (let n in renderExt){ if (sel[n]) activeExt[n] = renderExt[n]; }
+					_update();
+				});
+
+				// Обновление по мере ввода
+				_src.addEventListener('input', _update);
+				_update();
+			})();
+		</script>
+	</body>
+</html>
