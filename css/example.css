@@ -157,7 +157,7 @@ main>section
 {
 	font-size: 1.25em;
 }
-#result .quote, #result .alert
+#result blockquote, #result .alert
 {
     border-left: 4px solid #aaa;
     padding: 0.4em 0 0.4em 1em;
@@ -178,7 +178,6 @@ main>section
 }
 #result .alert>label
 {
-	margin-bottom: 1em;
 	font-weight: bold;
 	display: block;
 }

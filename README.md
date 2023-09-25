@@ -2,12 +2,12 @@
 
 1. **Modular** *all elements - modules*
 1. **Extensible** *easy create new elements, may use only needed, builtin elements may use extensions*
-1. **Fast** *just compare with the one you are using, maybe there is something faster*
+1. **Fast** *just compare with the one you are using, maybe there is something faster with similar features*
 1. And **compact** *minified version about 10Kb, dev version ~ 30Kb*.
 
 ## How it works
 
-![Process](img/precess.svg)
+![Process](img/process.svg)
 
 In the first stage, the parser extracts block type elements, then extracts inline type elements in those elements where it is needed.
 
@@ -47,12 +47,12 @@ Between the first and second step you can transform the DOM or save/restore if n
 
 1. **Модульный** *все элементы - модули*
 1. **Расширяемый** *легко создавать новые элементы, можно использовать только необходимые, встроенные элементы могут использовать расширения*
-1. **Быстрый** *просто сравните с тем, которым пользуетесь, может есть что-то быстрее*
+1. **Быстрый** *просто сравните с тем, которым пользуетесь, может есть что-то быстрее с похожими возможностями*
 1. И **компактный** *минифицированная версия около 10Кб, версия для разработчиков ~ 30Кб*.
 
 ## Как это работает
 
-![Process](img/precess.svg)
+![Process](img/process.svg)
 
 На первом этапе парсер извлекает элементы блочного типа, затем извлекает элементы строчного типа в тех элементах, где это необходимо.
 
