@@ -25,7 +25,7 @@
 	 * Блочный элемент DOM
 	 * @typedef {MDElement} MDBlockElement
 	 * @prop {enterFx} enter					- обработка новой строки созданным ранее элементом
-	 * @prop {finFx} fin						- Завершение построения DOM
+* @prop {finFx} fin						- Завершение построения DOM
 	 */
 
 	/**
@@ -161,7 +161,7 @@
 			{ 
 				const block		= newFx();
 				if (!block[textBlockMarker]) return addFx(block);
-
+				
 				_text.push(ctx.str);
 				return this;
 			},
@@ -266,6 +266,7 @@
 			{
 				const add		= item.fin(parseFx);	// Получим элементы из текста
 				items.splice(i, 1, ...add);				// Заменим контейнер новыми элементами
+				i				+= add.length-1;		// Пропустим все вставленные
 				continue;								// Все, забыли по этот элемент
 			}
 
