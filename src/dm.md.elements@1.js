@@ -43,7 +43,7 @@
 	function QUOTE(context)
 	{
 		const str				= context.str;
-		if (str.substr(0, 2)!=='> ') return null;
+		if (str[0]!=='>' || str[1]!==' ') return null;
 		context.str				= str.substr(2);
 
 		const el				= context.fx();
@@ -53,10 +53,10 @@
 			enter				: function (ctx, addFx, newFx)
 			{
 				const str		= ctx.str;
-				const trim		= str.substr(0, 1)==='>';
+				const trim		= str[0]==='>';
 				if (trim || ctx.emptyLines===0)
 				{
-					if (trim ) ctx.str 	= str.replace(/^(>\s|>)/, '');
+					if (trim) ctx.str 	= str.substr(str[1]===' ' ? 2 : 1);
 					if (!ctx.str)
 					{
 						ctx.resetEmptyLines	= false;
@@ -185,7 +185,7 @@
 			{
 				const block		= newFx();
 				if (block.type!=='P' || ctx.emptyLines>0) return addFx(block);
-				
+								
 				this._text		+= '\n'+block._text;
 				return this;
 			},
@@ -249,6 +249,12 @@
 	function DEL(ctx)
 	{
 		return ctx.str.replace(/(~~)(?=\S)([^\r]*?\S)\1/g, (m, start, txt) => ctx.push({ type: 'DEL', items: ctx.parse(txt) })); 
+	}
+
+	// Выделенный текст
+	function MARK(ctx)
+	{
+		return ctx.str.replace(/(==)(?=\S)([^\r]*?\S)\1/g, (m, start, txt) => ctx.push({ type: 'MARK', items: ctx.parse(txt) })); 
 	}
 
 	// Подстрочный/надстрочный
@@ -321,6 +327,7 @@
 	SimpleBR.inline				= true;
 	EM.inline					= true;
 	DEL.inline					= true;
+	MARK.inline					= true;
 	SUBSUP.inline				= true;
 	EasyLink.inline				= true;
 	InlineLink.inline			= true;
@@ -329,7 +336,7 @@
 	MENTION.inline				= true;
 	Symbols.inline				= true;
 
-	const allOrdered			= [ HR, H, ALERT, QUOTE, LIST, CODEBLOCK, P, StandardBR, SimpleBR, CODE, DEL, SUBSUP, EasyLink, InlineLink, EM, MEDIA, LINK, MENTION, Symbols ];
+	const allOrdered			= [ HR, H, ALERT, QUOTE, LIST, CODEBLOCK, P, StandardBR, SimpleBR, CODE, Symbols, DEL, MARK, SUBSUP, EasyLink, InlineLink, EM, MEDIA, LINK, MENTION ];
 	allOrdered.reduce((order, h) => (h.order=order+100), 0);
 
 	return Object.freeze({
@@ -347,6 +354,7 @@
 		CODE					: CODE,
 		EM						: EM,
 		DEL						: DEL,
+		MARK					: MARK,
 		SUBSUP					: SUBSUP,
 		MEDIA					: MEDIA,
 		LINK					: LINK,
@@ -356,7 +364,11 @@
 		InlineLink				: InlineLink,
 		Symbols					: Symbols,
 		// Standard collections
+		// All supported
 		$ALL					: Object.freeze(allOrdered),
-		$INLINE					: Object.freeze([ CODE, StandardBR, SimpleBR, DEL, SUBSUP, EasyLink, InlineLink, EM, MEDIA, LINK, MENTION, Symbols ]),
+		// Common elements
+		$COMMON					: Object.freeze([ HR, H, QUOTE, LIST, CODEBLOCK, P, StandardBR, CODE, DEL, MARK, SUBSUP, EasyLink, InlineLink, EM, MEDIA, LINK ]),
+		// All inline elements
+		$INLINE					: Object.freeze([ CODE, StandardBR, SimpleBR, DEL, MARK, SUBSUP, EasyLink, InlineLink, EM, MEDIA, LINK, MENTION, Symbols ]),
 	});
 });

@@ -14,16 +14,22 @@
 	
 	function _noWriter(el, buf, urls, ext)
 	{
-		buf.html('<div class="no-writer"><label>No writer for type=').t(el.type).html('</label>');
-		el.text && buf.t(el.text);
-		el.items && el.items.forEach(buf.el);
-		buf.html('</div>');
+		if (typeof(el)==='string')
+		{
+			buf.t(el);
+		} else
+		{
+			buf.html('<div class="no-writer"><label>No writer for type=').t(el.type).html('</label>');
+			el.text && buf.t(el.text);
+			el.items && el.items.forEach(buf.el);
+			buf.html('</div>');
+		}
 	}
 
 	const _chars				= { '<': '&lt;', '&': '&amp;' };
 	function _encode(t)
 	{
-		return t && t.replace(/[<&]/g, (m) => _chars[m]);
+		return t && t.toString().replace(/[<&]/g, (m) => _chars[m]);
 	}
 
 	function render(doc, ext)
@@ -36,7 +42,7 @@
 		const buf				= {
 			t					: (t) => { result.push(_encode(t)); return buf; },
 			html				: (...args) => { result.push(...args); return buf; },
-			el					: (el) => { typeof(el)==='string' ? buf.t(el) : ((this[el.type] || _noWriter)(el, buf, urls, ext)); },
+			el					: (el) => { (this[el.type] || _noWriter)(el, buf, urls, ext); },
 		};
 
 		buf.el(doc);
@@ -59,11 +65,11 @@
 		buf.html('</article>');
 	}
 
-	function block(el, buf, urls, ext)
+	function blockquote(el, buf, urls, ext)
 	{
-		buf.html('<div class="', el.type.toLowerCase(), '">');
+		buf.html('<blockquote>');
 		el.items.forEach(buf.el);
-		buf.html('</div>');
+		buf.html('</blockquote>');
 	}
 
 	function heading(el, buf, urls, ext)
@@ -83,7 +89,7 @@
 
 	function alert(el, buf, urls, ext)
 	{
-		buf.html('<div class="alert ', el.alert, '">', ext.alertLabel && ext.alertLabel(el.alert) || alert.defaultLabels[el.alert]);
+		buf.html('<div class="alert ', el.alert, '">', ext.alertLabel && (typeof(ext.alertLabel)==='function' && ext.alertLabel(el.alert) || ext.alertLabel[el.alert]) || alert.defaultLabels[el.alert]);
 		el.items.forEach(buf.el);
 		buf.html('</div>');
 	}
@@ -129,13 +135,6 @@
 		buf.html(el.lvl===3 ? '<b><i>' : el.lvl===2 ? '<b>' : '<i>');
 		el.items.forEach(buf.el);
 		buf.html(el.lvl===3 ? '</i></b>' : el.lvl===2 ? '</b>' : '</i>');
-	}
-
-	function del(el, buf, urls, ext)
-	{
-		buf.html('<del>');
-		el.items.forEach(buf.el);
-		buf.html('</del>');
 	}
 
 	function media(el, buf, urls, ext)
@@ -193,7 +192,7 @@
 		ROOT					: root,
 		H						: heading,
 		ALERT					: alert,
-		QUOTE					: block,
+		QUOTE					: blockquote,
 		UL						: list,
 		OL						: list,
 		LI						: list,
@@ -204,7 +203,8 @@
 		CODE					: code,
 		BR						: br,
 		EM						: em,
-		DEL						: del,
+		DEL						: list,
+		MARK					: list,
 		SUB						: list,
 		SUP						: list,
 		MEDIA					: media,
