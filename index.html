@@ -3,13 +3,13 @@
 	<head>
 		<link href="css/example.css" rel="stylesheet">
 		<!-- Подключение скриптов для разработки -->
-		<!-- <script src="src/dm.md.elements@1.js"></script>
+		<script src="src/dm.md.elements@1.js"></script>
 		<script src="src/dm.md.parser@1.js"></script>
-		<script src="src/dm.md.render.html@1.js"></script> -->
+		<script src="src/dm.md.render.html@1.js"></script>
 
 		<!-- Подключение минифицированных скриптов -->
-		<script src="dist/dm.md@1.min.js"></script>
-		<!-- <script src="showdown@2.1.0.min.js"></script> -->
+		<!-- <script src="dist/dm.md@1.min.js"></script> -->
+		<script src="https://unpkg.com/showdown@2.1.0/dist/showdown.min.js"></script>
 		
 		<!-- Подключение подсветки синтаксиса -->
 		<link href="https://etcdema.github.io/DmSyntax/dist/dm.syntax@1.min.css" rel="stylesheet">
@@ -44,9 +44,12 @@ Inline elements
 * Strikethrough:  
   `~~This was mistaken text~~` ==> ~~This was mistaken text~~
 
+* Marked:  
+  `==This was marked text==` ==> ==This was marked text==
+
 * Subscript:  
   `This is a <sub>subscript</sub> text` ==> This is a <sub>subscript</sub> text  
-  `This is a ~subscript~ text` => This is a ~subscript~ text
+  `This is a ~subscript~ text` ==> This is a ~subscript~ text
 * Superscript:  
   `This is a <sup>superscript</sup> text` ==> This is a <sup>superscript</sup> text  
   `This is a ^superscript^ text` ==> This is a ^superscript^ text
@@ -251,12 +254,6 @@ const renderExt = {
 				const _result	= document.getElementById('result');
 				const _cfg		= document.querySelector("#cfg .list");
 
-				// Заголовки для блоков предупреждений
-				const _alertLabels		= {
-					note		: '<label>[i] Информация</label>',
-					important	: '<label>[!] Важно</label>',
-					warning		: '<label>[‼] Предупреждение</label>',
-				};
 				// Отображение встроенного объекта
 				function _progressBar(json)
 				{
@@ -272,7 +269,11 @@ const renderExt = {
 				// Расширения генерации HTML
 				const renderExt	= {
 					// Заголовки блоков предупреждений
-					alertLabel	: (alert)      => _alertLabels[alert],
+					alertLabel	: {
+						note		: '<label>[i] Информация</label>',
+						important	: '<label>[!] Важно</label>',
+						warning		: '<label>[‼] Предупреждение</label>',
+					},
 					// Значение атрибута target для ссылок
 					linkTarget	: (url)        => url.url[0]!=='/' && '_blank',
 					// Упоминания
@@ -291,13 +292,13 @@ const renderExt = {
 				};
 
 				// Showdown для сравнения скорости
-				// const converter				= new showdown.Converter({
-				// 	openLinksInNewWindow	: true,
-				// 	strikethrough			: true,
-				// 	simpleLineBreaks		: true,
-				// 	moreStyling				: true,
-				// 	noHeaderId				: true,
-				// });
+				const converter				= new showdown.Converter({
+					openLinksInNewWindow	: true,
+					strikethrough			: true,
+					simpleLineBreaks		: true,
+					moreStyling				: true,
+					noHeaderId				: true,
+				});
 
 				// Создаем парсер markdown разметки с нужными нам элементами
 				let parse		= new DmMD.parser(DmMD.elements.$ALL);
@@ -348,6 +349,52 @@ const renderExt = {
 				// Обновление по мере ввода
 				_src.addEventListener('input', _update);
 				_update();
+
+				window.runShowdown		= function()
+				{
+					const start2		= performance.now();
+					const html2 		= converter.makeHtml(_src.value);
+					console.log('Showdown parse & render time: '+((performance.now()-start2)+'ms')+', HTML length: '+html2.length);
+
+					_result.innerHTML	= html2;
+					_json.innerHTML		= 'Render by showdown';
+				};
+
+				window.bench 	= function()
+				{
+					const src	= _src.value;
+					const parse	= new DmMD.parser(DmMD.elements.$COMMON);
+					const count	= 100;
+					let cnt		= count;
+					let htmlLen	= 0;
+					const start	= performance.now();
+
+					while((cnt--)>0)
+					{
+						const doc		= parse(src);
+						const html		= DmMD.HTML.render(doc);
+						htmlLen			+= html.length;
+					}
+
+					const time	= performance.now()-start;
+
+					cnt			= count;
+					let htmlLen2= 0;
+					const start2= performance.now();
+					while((cnt--)>0)
+					{
+						const html2 	= converter.makeHtml(src);
+						htmlLen2		+= html2.length;
+					}
+					const time2	= performance.now()-start2;
+
+					return [
+						'DmMD parse & render benchmark: total time = '+time+'ms'+', HTML size = '+htmlLen+', avg time = '+(time/count)+'ms, ops/sec = '+(count*1000/time),
+						'Showdown parse & render time: total time = '+time2+'ms'+', HTML size = '+htmlLen2+', avg time = '+(time2/count)+'ms, ops/sec = '+(count*1000/time2),
+					];
+				};
+
+				console.log(window.bench());
 			})();
 		</script>
 	</body>
