@@ -5,6 +5,16 @@
 1. **Fast** *just compare with the one you are using, maybe there is something faster with similar features*
 1. And **compact** *minified version about 10Kb, dev version ~ 30Kb*.
 
+## Why this implementation was made.
+
+In the projects where I took part, there was a need to generate HTML based on markdown, but different system modules required a different set of elements: for publishing articles, a full set and add-ons for inserting widgets, for chats, a minimum set of text formatting.
+
+In each case, the most suitable markdown translator was selected, which led to the complexity of system development and support.
+
+This implementation allows you to use exactly the set of elements that are needed in a particular case and unify work with markdown.
+
+Additionally, the implementation allows you to immediately build a DOM based on data, for example from a database, and then generate HTML with the same structure as based on markdown text.
+
 ## How it works
 
 ![Process](img/process.svg)
@@ -49,6 +59,16 @@ Between the first and second step you can transform the DOM or save/restore if n
 1. **Расширяемый** *легко создавать новые элементы, можно использовать только необходимые, встроенные элементы могут использовать расширения*
 1. **Быстрый** *просто сравните с тем, которым пользуетесь, может есть что-то быстрее с похожими возможностями*
 1. И **компактный** *минифицированная версия около 10Кб, версия для разработчиков ~ 30Кб*.
+
+## Зачем сделана эта реализация.
+
+В проектах, где я принимал участие, была необходимость генерации HTML на основе markdown но в разных модулях систем требовался разный набор элементов: для публикации статей полный набор и дополнения для вставки виджетов, для чатов минимальный набор форматирования текста.
+
+В каждом случае выбирался наиболее подходящий markdown транслятор, что приводило к усложению разработки и поддержки систем.
+
+Эта реализация позволяет использовать ровно тот набор элементов, который необходим в конкретном случае и унифицировать работу с markdown.
+
+Дополнительно реализация позволяет сразу строить DOM по данным, например из базы, и потом генерить HTML тое же структуры, что и на основе markdown текста.
 
 ## Как это работает
 
