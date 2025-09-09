@@ -153,7 +153,6 @@
 		const m					= (/^\|(?:(?:\\\||[^|])+\|)+$/i).exec(context.str);
 		if (!m) return null;
 
-		let _started			= true;
 		return {
 			type				: 'TABLE',
 			cols				: [],
@@ -162,16 +161,15 @@
 			],
 			enter				: function(ctx, addFx, newFx)
 			{
-				if (_started!==true) return null;
-
+				// Накапливаем исходные строки таблицы
 				const m			= (/^\|(?:(?:\\\||[^|])+\|)+$/i).exec(ctx.str);
 				if (!m) return null; 
 				this.rows.push(context.str);
-				
 				return this;
 			},
 			fin					: function(parseFx)
 			{
+				// Завершение создания DOM - парсим ячейки
 				const cols		= [];
 				const rows		= [];
 				let th			= true;
@@ -182,36 +180,40 @@
 					src.shift();
 					src.pop();
 
+					// Если находимся в заголовке - пробуем найти конец заголовка с настройками выравнивания
 					if (th && _detectEndTH(src, cols))
 					{
 						th		= false;
 						continue;
 					}
 
+					// Создаем ячейки и их содержимое + смотрим сколько у нас должно быть колонок
 					const cells	= src.reduce((r, t) => (r.push({ type: th ? 'TH' : 'TD', items: parseFx(t) }), r), []);
 					maxCols		= Math.max(maxCols, cells.length);
 					rows.push(cells);
 				}
 
+				// Добиваем/сокращаем колонки до нужного максимума
 				if (maxCols<cols.length)
 					cols.splice(maxCols);
 				else while(cols.length<maxCols)
 					cols.push('L');
 
+				// Готово
 				this.cols		= cols;
 				this.rows		= rows;
 			}
 		}
 	}
 
+	// Пробуем найти конец заголовка с настройками выравнивания
 	function _detectEndTH(src, cols)
 	{
 		const found				= [];
-
 		for (let i = 0; i < src.length; i++)
 		{
 			const c 			= (/(:)?\-+(:)?/).exec(src[i]);
-			if (!c) return false;
+			if (!c) return false;		// Все ячейки должны содержать описания колонок
 			found.push(c[1] && c[2] ? 'C' : c[2] ? 'R' : 'L');
 		}
 		cols.splice(0, 0, ...found);

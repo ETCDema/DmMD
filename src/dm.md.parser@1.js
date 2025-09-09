@@ -25,7 +25,7 @@
 	 * Блочный элемент DOM
 	 * @typedef {MDElement} MDBlockElement
 	 * @prop {enterFx} enter					- обработка новой строки созданным ранее элементом
-* @prop {finFx} fin						- Завершение построения DOM
+	 * @prop {finFx} fin						- Завершение построения DOM
 	 */
 
 	/**
@@ -40,7 +40,7 @@
 	/**
 	 * Завершение построения DOM
 	 * @callback finFx
-	 * @param {parserFx} parser					- идентификатор ссылки, если не указан будет сгенерирован
+	 * @param {parserFx} parser					- Метод парсинга текста для подготовки вложенных элементов
 	 * @returns {void}
 	 */
 
