@@ -105,6 +105,32 @@
 		el.items.forEach(buf.el);
 		buf.html('</p>');
 	}
+
+	function table(el, buf, urls, ext)
+	{
+		buf.html('<div class="scroll-container"><table><colgroup>');
+		const cols				= el.cols.map(c => (c==='R' ? ' class="ta-r"' : c==='C' ? ' class="ta-c"' : ''))
+		el.rows.forEach(r => 
+		{
+			buf.html('<tr>');
+			r.forEach((c, i) => 
+			{
+				if (c.type==='TH')
+				{
+					buf.html('<th>');
+					c.items.forEach(buf.el);
+					buf.html('</th>');
+				} else
+				{
+					buf.html('<td', cols[i] || '', '>');
+					c.items.forEach(buf.el);
+					buf.html('</td>');
+				}
+			});
+			buf.html('</tr>');
+		});
+		buf.html('</table></div>');
+	}
 	
 	function pre(el, buf, urls, ext)
 	{
@@ -197,6 +223,7 @@
 		OL						: list,
 		LI						: list,
 		P						: p,
+		TABLE					: table,
 		CODEBLOCK				: pre,
 		HR						: hr,
 		// Inline elements

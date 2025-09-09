@@ -202,6 +202,41 @@ main>section
 {
 	vertical-align: middle;
 }
+#result .scroll-container
+{
+	overflow-x: auto;
+}
+#result table
+{
+	border-collapse: collapse;
+	width: fit-content;
+	max-width: -moz-max-content;
+	max-width: max-content;
+	vertical-align: bottom;
+}
+#result table th
+{
+    border-bottom: 1px solid #ccc;
+    padding: 1em .2em;
+	text-align: center;
+	font-size: .8em;
+	background-color: #f9f9f9;
+    border-right: 1px solid #fff;
+}
+#result table td
+{
+    border-bottom: 1px solid #ccc;
+    padding: .6em;
+	vertical-align: top;
+}
+#result table td.ta-c
+{
+	text-align: center;
+}
+#result table td.ta-r
+{
+	text-align: right;
+}
 #result pre
 {
     font-family: monospace;

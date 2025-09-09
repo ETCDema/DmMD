@@ -147,6 +147,77 @@
 		};
 	}
 
+	// Таблицы
+	function TABLE(context)
+	{
+		const m					= (/^\|(?:(?:\\\||[^|])+\|)+$/i).exec(context.str);
+		if (!m) return null;
+
+		let _started			= true;
+		return {
+			type				: 'TABLE',
+			cols				: [],
+			rows				: [
+				context.str
+			],
+			enter				: function(ctx, addFx, newFx)
+			{
+				if (_started!==true) return null;
+
+				const m			= (/^\|(?:(?:\\\||[^|])+\|)+$/i).exec(ctx.str);
+				if (!m) return null; 
+				this.rows.push(context.str);
+				
+				return this;
+			},
+			fin					: function(parseFx)
+			{
+				const cols		= [];
+				const rows		= [];
+				let th			= true;
+				let maxCols		= 0;
+				for (let r = 0; r < this.rows.length; r++)
+				{
+					const src 	= this.rows[r].split('|');
+					src.shift();
+					src.pop();
+
+					if (th && _detectEndTH(src, cols))
+					{
+						th		= false;
+						continue;
+					}
+
+					const cells	= src.reduce((r, t) => (r.push({ type: th ? 'TH' : 'TD', items: parseFx(t) }), r), []);
+					maxCols		= Math.max(maxCols, cells.length);
+					rows.push(cells);
+				}
+
+				if (maxCols<cols.length)
+					cols.splice(maxCols);
+				else while(cols.length<maxCols)
+					cols.push('L');
+
+				this.cols		= cols;
+				this.rows		= rows;
+			}
+		}
+	}
+
+	function _detectEndTH(src, cols)
+	{
+		const found				= [];
+
+		for (let i = 0; i < src.length; i++)
+		{
+			const c 			= (/(:)?\-+(:)?/).exec(src[i]);
+			if (!c) return false;
+			found.push(c[1] && c[2] ? 'C' : c[2] ? 'R' : 'L');
+		}
+		cols.splice(0, 0, ...found);
+		return true;
+	}
+
 	// Блоки кода
 	function CODEBLOCK(context)
 	{
@@ -319,6 +390,7 @@
 	QUOTE.inline				= false;
 	ALERT.inline				= false;
 	LIST.inline					= false;
+	TABLE.inline				= false;
 	CODEBLOCK.inline			= false;
 	P.inline					= false;
 
@@ -336,7 +408,7 @@
 	MENTION.inline				= true;
 	Symbols.inline				= true;
 
-	const allOrdered			= [ HR, H, ALERT, QUOTE, LIST, CODEBLOCK, P, StandardBR, SimpleBR, CODE, Symbols, DEL, MARK, SUBSUP, EasyLink, InlineLink, EM, MEDIA, LINK, MENTION ];
+	const allOrdered			= [ HR, H, ALERT, QUOTE, LIST, TABLE, CODEBLOCK, P, StandardBR, SimpleBR, CODE, Symbols, DEL, MARK, SUBSUP, EasyLink, InlineLink, EM, MEDIA, LINK, MENTION ];
 	allOrdered.reduce((order, h) => (h.order=order+100), 0);
 
 	return Object.freeze({
@@ -346,6 +418,7 @@
 		ALERT					: ALERT,
 		QUOTE					: QUOTE,
 		LIST					: LIST,
+		TABLE					: TABLE,
 		CODEBLOCK				: CODEBLOCK,
 		P						: P,
 		// Inline elements
@@ -367,7 +440,7 @@
 		// All supported
 		$ALL					: Object.freeze(allOrdered),
 		// Common elements
-		$COMMON					: Object.freeze([ HR, H, QUOTE, LIST, CODEBLOCK, P, StandardBR, CODE, DEL, MARK, SUBSUP, EasyLink, InlineLink, EM, MEDIA, LINK ]),
+		$COMMON					: Object.freeze([ HR, H, QUOTE, LIST, TABLE, CODEBLOCK, P, StandardBR, CODE, DEL, MARK, SUBSUP, EasyLink, InlineLink, EM, MEDIA, LINK ]),
 		// All inline elements
 		$INLINE					: Object.freeze([ CODE, StandardBR, SimpleBR, DEL, MARK, SUBSUP, EasyLink, InlineLink, EM, MEDIA, LINK, MENTION, Symbols ]),
 	});
